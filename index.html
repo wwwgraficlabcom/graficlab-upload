@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GraficLab - Carica File</title>
     <style>
-        /* ... (stili invariati) ... */
+        /* ... (stili precedenti rimangono invariati) ... */
     </style>
 </head>
 <body>
@@ -23,19 +23,13 @@
             <input type="hidden" name="_next" value="https://wwwgraficlabcom.github.io/graficlab-upload/grazie.html">
             <input type="hidden" name="_subject" value="Nuovo caricamento file su GraficLab">
             <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
         </form>
         <div id="message"></div>
     </div>
     <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
-            // Rimuoviamo e.preventDefault() per permettere l'invio del form
-            
-            var files = document.getElementById('file').files;
-            if (files.length > 0) {
-                document.getElementById('message').textContent = 'Caricamento in corso...';
-            }
-            
-            // Rimuoviamo la gestione manuale del fetch perché FormSubmit gestirà l'invio
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('message').textContent = 'Caricamento in corso...';
         });
     </script>
 </body>
