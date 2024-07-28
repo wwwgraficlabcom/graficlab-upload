@@ -24,8 +24,19 @@
         h1 {
             color: #333;
         }
-        #file-upload {
-            margin: 1rem 0;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         #upload-button {
             background-color: #4CAF50;
@@ -49,9 +60,15 @@
     <div class="upload-container">
         <h1>Carica i tuoi file su GraficLab</h1>
         <form action="https://formsubmit.co/info@graficlab.com" method="POST" enctype="multipart/form-data">
-            <input type="file" id="file-upload" name="attachment[]" multiple accept=".pdf,.jpg,.psd,.eps,.ai">
+            <label for="nome_lavoro">Nome del lavoro:</label>
+            <input type="text" id="nome_lavoro" name="nome_lavoro" required>
+
+            <label for="file-upload">Seleziona file (PDF, JPG, PSD, EPS, AI):</label>
+            <input type="file" id="file-upload" name="attachment[]" multiple accept=".pdf,.jpg,.psd,.eps,.ai" required>
+
             <input type="hidden" name="_next" value="https://wwwgraficlabcom.github.io/graficlab-upload/grazie.html">
             <input type="hidden" name="_template" value="table">
+            
             <button type="submit" id="upload-button">Carica File</button>
         </form>
         <div id="loading">Caricamento in corso...</div>
