@@ -38,7 +38,8 @@
             margin-bottom: 0.5rem;
             text-align: left;
         }
-        input[type="text"], input[type="file"] {
+        input[type="text"],
+        input[type="file"] {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid #ddd;
@@ -63,6 +64,12 @@
             margin-top: 1rem;
             color: #666;
         }
+        .file-size-limit {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -71,9 +78,10 @@
         <form action="https://formsubmit.co/info@graficlab.com" method="POST" enctype="multipart/form-data">
             <label for="nome_lavoro">Nome del lavoro:</label>
             <input type="text" id="nome_lavoro" name="nome_lavoro" required>
-
+            
             <label for="file-upload">Seleziona file (PDF, JPG, PNG, PSD, EPS, AI):</label>
             <input type="file" id="file-upload" name="attachment" multiple accept=".pdf,.jpg,.png,.psd,.eps,.ai" required>
+            <div class="file-size-limit">Limite massimo: 25 MB in totale</div>
             
             <input type="hidden" name="_next" value="https://wwwgraficlabcom.github.io/graficlab-upload/grazie.html">
             <input type="hidden" name="_captcha" value="false">
@@ -87,7 +95,7 @@
         document.querySelector('form').addEventListener('submit', function(e) {
             var fileInput = document.getElementById('file-upload');
             var maxSize = 25 * 1024 * 1024; // 25 MB in bytes
-
+            
             if (fileInput.files.length > 0) {
                 var totalSize = Array.from(fileInput.files).reduce((acc, file) => acc + file.size, 0);
                 if (totalSize > maxSize) {
@@ -96,7 +104,7 @@
                     return;
                 }
             }
-
+            
             document.getElementById('loading').style.display = 'block';
             document.getElementById('upload-button').disabled = true;
         });
