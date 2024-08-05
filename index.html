@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GraficLab Advanced Mockup Editor</title>
+    <title>GraficLab Internal Mockup Editor</title>
     <style>
         :root {
             --primary-color: #3498db;
@@ -118,9 +118,6 @@
         input[type="range"] {
             width: calc(100% - 110px);
         }
-        #shirtUpload {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -178,7 +175,7 @@
                 <button class="color-option" style="background-color: yellow;" data-color="yellow"></button>
             </div>
             <div class="preview-container">
-                <img id="productImage" src="https://placehold.co/400x400/ffffff/000000.png?text=T-Shirt" alt="Product">
+                <img id="productImage" src="images/tshirt_white.png" alt="Product">
                 <canvas id="designOverlay"></canvas>
             </div>
             <div class="controls">
@@ -190,10 +187,6 @@
                 <br>
                 <label for="scale">Scala:</label>
                 <input type="range" id="scale" min="10" max="100" value="50">
-            </div>
-            <div id="shirtUpload">
-                <label for="shirtImage">Carica immagine maglia (PNG):</label>
-                <input type="file" id="shirtImage" accept="image/png">
             </div>
         </div>
     </div>
@@ -208,20 +201,60 @@
         const positionY = document.getElementById('positionY');
         const scale = document.getElementById('scale');
         const colorCount = document.getElementById('colorCount');
-        const shirtImage = document.getElementById('shirtImage');
+        const productType = document.getElementById('productType');
 
         let designImage = new Image();
+
+        const productImages = {
+            tshirt: {
+                white: 'images/tshirt_white.png',
+                black: 'images/tshirt_black.png',
+                red: 'images/tshirt_red.png',
+                blue: 'images/tshirt_blue.png',
+                green: 'images/tshirt_green.png',
+                yellow: 'images/tshirt_yellow.png'
+            },
+            felpa: {
+                white: 'images/felpa_white.png',
+                black: 'images/felpa_black.png',
+                red: 'images/felpa_red.png',
+                blue: 'images/felpa_blue.png',
+                green: 'images/felpa_green.png',
+                yellow: 'images/felpa_yellow.png'
+            },
+            giubbino: {
+                white: 'images/giubbino_white.png',
+                black: 'images/giubbino_black.png',
+                red: 'images/giubbino_red.png',
+                blue: 'images/giubbino_blue.png',
+                green: 'images/giubbino_green.png',
+                yellow: 'images/giubbino_yellow.png'
+            },
+            penna: {
+                white: 'images/penna_white.png',
+                black: 'images/penna_black.png',
+                red: 'images/penna_red.png',
+                blue: 'images/penna_blue.png',
+                green: 'images/penna_green.png',
+                yellow: 'images/penna_yellow.png'
+            }
+        };
+
+        function updateProductImage() {
+            const selectedColor = document.querySelector('.color-option.selected').dataset.color;
+            const selectedProduct = productType.value;
+            productImage.src = productImages[selectedProduct][selectedColor];
+        }
 
         colorOptions.forEach(option => {
             option.addEventListener('click', () => {
                 colorOptions.forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
-                const color = option.dataset.color;
-                if (!shirtImage.files.length) {
-                    productImage.src = `https://placehold.co/400x400/${color}/000000.png?text=T-Shirt`;
-                }
+                updateProductImage();
             });
         });
+
+        productType.addEventListener('change', updateProductImage);
 
         designFile.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -232,17 +265,6 @@
                     designImage.onload = () => {
                         updateDesignOverlay();
                     };
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        shirtImage.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    productImage.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
