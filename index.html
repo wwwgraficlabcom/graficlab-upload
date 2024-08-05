@@ -3,118 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GraficLab - Caricamento File</title>
+    <title>GraficLab Modern Mockup Editor</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
         }
-        .upload-container {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .form-section, .preview-section {
+            flex: 1;
             background-color: white;
-            padding: 2rem;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 1.5rem;
+        h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        form div {
+            margin-bottom: 20px;
         }
         label {
-            font-weight: bold;
             display: block;
-            margin-bottom: 0.5rem;
-            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        input[type="text"],
-        input[type="file"],
-        textarea {
+        select, input[type="file"], textarea {
             width: 100%;
-            padding: 0.5rem;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
+            border-radius: 5px;
+            font-size: 16px;
         }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        #upload-button {
-            background-color: #4CAF50;
+        button {
+            background-color: var(--secondary-color);
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 16px;
             transition: background-color 0.3s;
         }
-        #upload-button:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #27ae60;
         }
-        #loading {
-            display: none;
-            margin-top: 1rem;
-            color: #666;
+        .preview-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
         }
-        .file-size-limit {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 0.25rem;
-            text-align: left;
+        #productImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        #designOverlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80%;
+            max-height: 80%;
+        }
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border: 2px solid var(--primary-color);
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls label {
+            display: inline-block;
+            width: 100px;
+        }
+        input[type="range"] {
+            width: calc(100% - 110px);
         }
     </style>
 </head>
 <body>
-    <div class="upload-container">
-        <h1>Carica i tuoi file su GraficLab</h1>
-        <form action="https://formsubmit.co/ordini@graficlab.com" method="POST" enctype="multipart/form-data">
-            <label for="nome_lavoro">Nome del lavoro:</label>
-            <input type="text" id="nome_lavoro" name="nome_lavoro" required>
-            
-            <label for="file-upload">Seleziona file (PDF, JPG, PNG, PSD, EPS, AI):</label>
-            <input type="file" id="file-upload" name="attachment" multiple accept=".pdf,.jpg,.png,.psd,.eps,.ai" required>
-            <div class="file-size-limit">Limite massimo: 25 MB in totale</div>
-            
-            <label for="note">Note:</label>
-            <textarea id="note" name="note" placeholder="es: voglio la stampa al centro petto color blu ..." required></textarea>
-            
-            <input type="hidden" name="_next" value="https://wwwgraficlabcom.github.io/graficlab-upload/grazie.html">
-            <input type="hidden" name="_captcha" value="false">
-            
-            <button type="submit" id="upload-button">Carica File</button>
-        </form>
-        <div id="loading">Caricamento in corso...</div>
+    <div class="container">
+        <div class="form-section">
+            <h2>GraficLab Mockup Editor</h2>
+            <form id="mockupForm">
+                <div>
+                    <label for="productType">Tipo di prodotto:</label>
+                    <select id="productType" required>
+                        <option value="tshirt">T-Shirt</option>
+                        <option value="felpa">Felpa</option>
+                        <option value="giubbino">Giubbino</option>
+                        <option value="penna">Penna</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="printType">Tipo di stampa:</label>
+                    <select id="printType" required>
+                        <option value="serigrafia">Serigrafia</option>
+                        <option value="digitale">Stampa digitale</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="colorCount">Numero di colori:</label>
+                    <select id="colorCount" required>
+                        <option value="1">Monocolore</option>
+                        <option value="2">Due colori</option>
+                        <option value="3">Tre colori</option>
+                        <option value="4">Quattro colori</option>
+                        <option value="5">Cinque colori</option>
+                        <option value="6">Sei colori</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="designFile">File di design:</label>
+                    <input type="file" id="designFile" accept="image/*" required>
+                </div>
+                <div>
+                    <label for="jobDescription">Descrizione del lavoro:</label>
+                    <textarea id="jobDescription" rows="4" required></textarea>
+                </div>
+                <button type="submit">Crea Mockup</button>
+            </form>
+        </div>
+        <div class="preview-section">
+            <h3>Anteprima</h3>
+            <div class="color-options">
+                <button class="color-option selected" style="background-color: white;" data-color="white"></button>
+                <button class="color-option" style="background-color: black;" data-color="black"></button>
+                <button class="color-option" style="background-color: red;" data-color="red"></button>
+                <button class="color-option" style="background-color: blue;" data-color="blue"></button>
+            </div>
+            <div class="preview-container">
+                <img id="productImage" src="https://placehold.co/400x400/ffffff/000000.png?text=T-Shirt" alt="Product">
+                <canvas id="designOverlay"></canvas>
+            </div>
+            <div class="controls">
+                <label for="positionX">Posizione X:</label>
+                <input type="range" id="positionX" min="0" max="100" value="50">
+                <br>
+                <label for="positionY">Posizione Y:</label>
+                <input type="range" id="positionY" min="0" max="100" value="50">
+                <br>
+                <label for="scale">Scala:</label>
+                <input type="range" id="scale" min="10" max="100" value="50">
+            </div>
+        </div>
     </div>
 
     <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
-            var fileInput = document.getElementById('file-upload');
-            var maxSize = 25 * 1024 * 1024; // 25 MB in bytes
-            
-            if (fileInput.files.length > 0) {
-                var totalSize = Array.from(fileInput.files).reduce((acc, file) => acc + file.size, 0);
-                if (totalSize > maxSize) {
-                    e.preventDefault();
-                    alert('La dimensione totale dei file supera il limite di 25 MB. Seleziona file più piccoli.');
-                    return;
-                }
+        const form = document.getElementById('mockupForm');
+        const designFile = document.getElementById('designFile');
+        const designOverlay = document.getElementById('designOverlay');
+        const productImage = document.getElementById('productImage');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const positionX = document.getElementById('positionX');
+        const positionY = document.getElementById('positionY');
+        const scale = document.getElementById('scale');
+        const colorCount = document.getElementById('colorCount');
+
+        let designImage = new Image();
+
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                const color = option.dataset.color;
+                productImage.src = `https://placehold.co/400x400/${color}/000000.png?text=T-Shirt`;
+            });
+        });
+
+        designFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    designImage.src = e.target.result;
+                    designImage.onload = () => {
+                        updateDesignOverlay();
+                    };
+                };
+                reader.readAsDataURL(file);
             }
-            
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('upload-button').disabled = true;
+        });
+
+        [positionX, positionY, scale, colorCount].forEach(input => {
+            input.addEventListener('input', updateDesignOverlay);
+        });
+
+        function updateDesignOverlay() {
+            const canvas = designOverlay;
+            const ctx = canvas.getContext('2d');
+            const x = positionX.value / 100;
+            const y = positionY.value / 100;
+            const s = scale.value / 100;
+
+            canvas.width = productImage.width;
+            canvas.height = productImage.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const newWidth = designImage.width * s;
+            const newHeight = designImage.height * s;
+            const drawX = (canvas.width - newWidth) * x;
+            const drawY = (canvas.height - newHeight) * y;
+
+            ctx.drawImage(designImage, drawX, drawY, newWidth, newHeight);
+
+            // Simulazione di trasformazione colore
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            const colors = parseInt(colorCount.value);
+
+            for (let i = 0; i < data.length; i += 4) {
+                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                const threshold = 255 / colors;
+                const newColor = Math.floor(avg / threshold) * threshold;
+
+                data[i] = newColor;     // R
+                data[i + 1] = newColor; // G
+                data[i + 2] = newColor; // B
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Mockup creato! (Simulazione)');
         });
     </script>
 </body>
